@@ -1,0 +1,33 @@
+{{> header}}
+
+<main class="w-full bg-white flex items-center justify-center py-24">
+    <section class="w-4/5 mx-auto">
+        <h4>Bienvenido {{usuario.nombres}}</h4>
+        <div class="flex w-full justify-between">
+            <h1 class="text-3xl mb-4">Lista de conferencias</h1>
+        </div>
+        <table class="rounded-md bg-white w-full shadow-md">
+            <thead>
+                <tr class="border-b-2 border-gray-400 bg-blue-100">
+                    <th class="py-2 text-gray-700">Nombre</th>
+                    <th class="py-2 text-gray-700">Fecha inicio</th>
+                    <th class="py-2 text-gray-700">Fecha fin</th>
+                    <th class="py-2 text-gray-700">Enlace conferencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each listaConferencias}}
+                    <tr class="border-b-2 border-gray-400">
+                        <td class="py-2 text-center">{{this.dataValues.nombre}}</td>
+                        <td class="py-2 text-center">{{this.dataValues.fechaInicio}}</td>
+                        <td class="py-2 text-center">{{this.dataValues.fechaFin}}</td>
+                        <td class="py-2 text-center">{{this.dataValues.enlace}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        
+    </section>
+</main>
+
+{{> footer}}

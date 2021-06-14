@@ -1,0 +1,152 @@
+{{> header}}
+<main class="w-full bg-gray-100 flex items-center justify-center py-24">
+    <div class="w-10/12 lg:w-6/12 shadow-xl p-8 bg-white">
+        <h1 class="text-2xl font-medium mt-2 mb-1">{{conferencia.dataValues.nombre}}</h2>
+        <div class="md:flex">
+            <div class="w-full md:w-1/2">
+                <label for="">Fecha inicio</label>
+                <input id="inicio" class="w-full mr-1 p-1 mb-2 block border border-black rounder-md" type="date" name="fechaInicio" value="{{conferencia.dataValues.fechaInicio}}" readonly>
+            </div>
+            <div class="md:ml-2 w-full md:w-1/2">
+                <label for="">Fecha fin</label>
+                <input id="fin" class="w-full p-1 mb-2 block border border-black rounder-md" type="date" name="fechaFin" value="{{conferencia.dataValues.fechaFin}}" readonly>
+            </div>
+        </div>        
+        <div id="container">
+
+        </div>
+        <div class="flex mt-4">
+            <button class="p-2 bg-blue-400 text-white mb-2 mr-1" onclick="siguiente()">Siguiente</button>
+            <button class="p-2 bg-blue-400 text-white mb-2" onclick="anterior()">Anterior</button>
+        </div>
+        <div class="hidden">
+            <h1 class="text-xl mt-2 mb-1">Programación</h2>
+            <table class="rounded-md bg-white w-full shadow-md">
+                <thead>
+                    <tr class="border-b-2 border-gray-400 bg-blue-100">
+                        <th class="py-2 text-gray-700">Nombre ponencia</th>
+                        <th class="py-2 text-gray-700">Fecha inicio</th>
+                        <th class="py-2 text-gray-700">Hora inicio</th>
+                        <th class="py-2 text-gray-700">Hora fin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each programacion}}
+                    <tr class="border-b-2 border-gray-400">
+                        <td id="nombre" class="py-2 text-gray-700">{{this.nombre}}</td>
+                        <td id="dia" class="py-2 text-gray-700">{{this.fechaInicio}}</td>
+                        <td id="horaIni" class="py-2 text-gray-700">{{this.horaInicio}}</td>
+                        <td id="horaFin" class="py-2 text-gray-700">{{this.horaFin}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="bg-black bg-opacity-50 fixed inset-0 hidden justify-center items-center" id="overlay">
+        <div class="bg-gray-200 max-w-sm py-2 px-3 rounded shadow-xl text-gray-800">
+            <div class="flex justify-between items-center">
+                <h4 class="text-lg font-bold">Registrar sesión</h4>
+                <svg class="h-6 w-6 cursor-pointer p-1 hover:bg-gray-300 rounded-full" id="close-modal" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <div class="mt-2 text-sm">
+                <form class="bg-white p-8 rounded-md shadow-2xl" action="/admin/editar-programacion/{{conferencia.dataValues.id}}" method="POST">
+                    <input id="fechaSesion" class="p-1 mb-2 block border border-black rounder-md w-72" type="date" name="fechaInicio" readonly required>
+                    <input class="p-1 mb-2 block border border-black rounder-md w-72" type="time" name="horaInicio" required>
+                    <input class="p-1 mb-2 block border border-black rounder-md w-72" type="time" name="horaFin" required>
+                    <select name="idPonencia" required>
+                        <option value="">Seleccione una ponencia</option>
+                        {{#each ponencias}} 
+                            <option value="{{this.dataValues.id}}">{{this.dataValues.nombre}}</option>
+                        {{/each}}
+                    </select>
+                    <div class="mt-3 flex justify-end space-x-3">
+                        <button class="px-3 py-1 bg-red-800 text-gray-200 hover:bg-red-600 rounded">Regisrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    var actual = 1
+    var maximo = 0;
+    function toggleModal (dia) {
+        overlay.classList.toggle('hidden')
+        overlay.classList.toggle('flex')
+        document.querySelector("#fechaSesion").value = dia
+    }
+    function siguiente() {
+        if (actual < maximo) {
+            document.querySelector(`#dia${actual}`).style.display = "none"
+            actual++;
+            document.querySelector(`#dia${actual}`).style.display = "block"
+        }
+    }
+    function anterior () {
+        if (actual > 1) {
+            document.querySelector(`#dia${actual}`).style.display = "none"
+            actual--;
+            document.querySelector(`#dia${actual}`).style.display = "block"
+        }
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        const fechaInicioConf = new Date(document.querySelector("#inicio").value)
+        var inicio = fechaInicioConf.getTime()
+        var fin = new Date(document.querySelector("#fin").value).getTime()
+        var diff = fin - inicio;
+        var dias = (diff/(1000*60*60*24) ) + 1;
+        maximo = dias;
+        const container = document.querySelector("#container")
+        const sesiones = {}
+        Array.from(document.querySelectorAll("table tbody tr")).forEach(tr => {
+            let fechaRaw = tr.querySelector("#dia").innerText
+            let fecha = new Date(tr.querySelector("#dia").innerText);
+            let nombre = tr.querySelector("#nombre").innerText;
+            let horaIni = tr.querySelector("#horaIni").innerText;
+            let horaFin = tr.querySelector("#horaFin").innerText;
+            let diffSesion = fecha - inicio;
+            const dataDia = {nombre, fechaRaw, horaIni, horaFin}
+            let dia = (diffSesion/(1000*60*60*24) ) + 1;
+            if (sesiones[dia]) {
+                sesiones[dia].push(dataDia)
+            } else {
+                sesiones[dia] = []
+                sesiones[dia].push(dataDia)
+            }
+        });
+        let str = ``;
+        for (let i = 1; i <=maximo; i++) {
+            const fechaRelativa = new Date(document.querySelector("#inicio").value)
+            fechaRelativa.setDate(fechaRelativa.getDate() + i);
+            str += `<div id="dia${i}" class="${i === 1 ? 'block': 'hidden'} p-4 rounded-md bg-blue-100">
+                    <h1 class="text-xl mb-2 font-medium">Día ${i}</h1>`;
+            sesiones[i]?.forEach(sesion => {
+                str += `<div class="mt-4 bg-blue-300 p-2 rounded-md">
+                    <h2><b>Nombre ponencia: </b>${sesion.nombre}</h2>
+                    <p><b>Fecha: </b> ${sesion.fechaRaw}</p><p><b>Hora inicio:</b> ${sesion.horaIni}</p><p><b>Hora fin: </b>${sesion.horaFin}</p>
+                </div>`;
+            })
+            let date
+            let day1 = fechaRelativa.getDate()
+            let month1 = fechaRelativa.getMonth() + 1
+            let year1 = fechaRelativa.getFullYear()
+            date = `${year1}-${(month1 + 1) < 10 ? '0'.concat(month1) : month1}-${day1 < 10 ? '0'.concat(day1) : day1}`
+            if (!sesiones[i]) str += "<h2>No hay sesiones registradas para este día</h2>"
+            str += `<button class="p-2 bg-blue-600 text-white mt-4 mb-4" onclick="toggleModal('${date}')">Registrar sesión</button>`;
+            str += `</div>`;
+        }
+        container.innerHTML = str
+        const overlay = document.querySelector('#overlay')
+        const closeBtn = document.querySelector('#close-modal')
+        closeBtn.addEventListener('click', toggleModal)
+    })
+</script>
+
+{{> footer}}

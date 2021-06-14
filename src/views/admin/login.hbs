@@ -1,0 +1,18 @@
+{{> header}}
+
+<main class="w-full bg-white flex items-center justify-center py-24">
+    <form class="mx-auto w-4/5 py-4 bg-white md:flex items-center justify-center py-" action="/admin/login" method="post">
+        <img class="w-96 mr-12" src="https://image.freepik.com/vector-gratis/iniciar-sesion-ilustracion-concepto_114360-125.jpg" alt="">
+
+        <div class="bg-white shadow-2xl p-8 rounded-md">
+            <p class="text-2xl mb-2">Inicio de sesión administrador</p>
+            <p class="p-4 bg-blue-100 rounded-md mb-4">Acceda a su cuenta ingresando <br> la siguiente información.</p>
+            <input class="border border-gray-600 block mb-2 p-2 w-64" placeholder="correo" type="text" name="correo">
+            <input class="border border-gray-600 block mb-2 p-2 w-64" placeholder="*******" type="password" name="contrasena">
+            <button class="bg-blue-500 justify-center text-white flex py-2 w-64">Ingresar</button>
+            <a href="/usuario/login">Iniciar como usuario</a>
+        </div>
+    </form>
+</main>
+
+{{> footer}}

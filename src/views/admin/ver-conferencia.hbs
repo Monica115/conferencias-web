@@ -1,0 +1,78 @@
+{{> header}}
+
+<main class="w-full bg-white flex items-center justify-center py-24">
+    <div class="">
+        <form class="bg-white p-8 rounded-md shadow-2xl" action="/admin/actualizar-conferencia/{{conferencia.dataValues.id}}" method="POST">
+            <h1 class="text-2xl mb-4" id="t">Ver conferencia</h1>
+            <input class="p-1 mb-2 block border border-black rounder-md w-72" type="text" name="nombre" value="{{conferencia.dataValues.nombre}}" readonly>
+            <input class="p-1 mb-2 block border border-black rounder-md w-72" type="text" name="descripcion" value="{{conferencia.dataValues.descripcion}}" readonly>
+            <input class="p-1 mb-2 block border border-black rounder-md w-72" type="text" name="enlace" value="{{conferencia.dataValues.enlace}}" readonly>
+            <input class="p-1 mb-2 block border border-black rounder-md w-72" type="date" name="fechaInicio" value="{{conferencia.dataValues.fechaInicio}}" readonly>
+            <input class="p-1 mb-2 block border border-black rounder-md w-72" type="date" name="fechaFin" value="{{conferencia.dataValues.fechaFin}}" readonly>
+            <button class="p-2 bg-blue-400 text-white mb-2" id="btnF" style="display: none;">Actualizar</button>
+            <button class="p-2 bg-blue-600 text-white" id="btnE" type="button">Editar</button>
+            <button class="p-2 bg-green-500 text-white" id="btnP" type="button">Ver programación</button>
+        </form>
+    </div>
+    <div class="w-1/2 ml-8 bg-white p-8 rounded-md shadow-2xl" id="pon" style="display: none;">
+        <a class="duration-300 hover:bg-black outline-none text-sm my-2 text-white justify-center items-center flex bg-red-500 py-0.5 w-32 rounded-md" href="/admin/editar-programacion/{{conferencia.dataValues.id}}">Editar programación</a>
+        
+        <h1 class="text-xl mt-2 mb-1">Programación</h2>
+        <table class="rounded-md bg-white w-full shadow-md">
+            <thead>
+                <tr class="border-b-2 border-gray-400 bg-blue-100">
+                    <th class="py-2 text-gray-700">Nombre ponencia</th>
+                    <th class="py-2 text-gray-700">Fecha inicio</th>
+                    <th class="py-2 text-gray-700">Hora inicio</th>
+                    <th class="py-2 text-gray-700">Hora fin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each programacion}}
+                <tr class="border-b-2 border-gray-400">
+                    <td class="py-2 text-gray-700">{{this.nombre}}</td>
+                    <td class="py-2 text-gray-700">{{this.fechaInicio}}</td>
+                    <td class="py-2 text-gray-700">{{this.horaInicio}}</td>
+                    <td class="py-2 text-gray-700">{{this.horaFin}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</main>
+
+{{> footer}}
+    <script>
+        var editando = false;
+        var programacion = false;
+
+        document.querySelector("#btnE").addEventListener("click", (e) => {
+            if (!editando) {
+                Array.from(document.querySelectorAll("input")).forEach(el => {
+                    el.readOnly = false;
+                });
+                document.querySelector("#btnF").style.display = "block"
+                e.target.innerText = "Cancelar"
+                editando = true
+            } else {
+                Array.from(document.querySelectorAll("input")).forEach(el => {
+                    el.readOnly = true;
+                });
+                document.querySelector("#btnF").style.display = "none"
+                e.target.innerText = "Editar"
+                editando = false
+            }
+        });
+        document.querySelector("#btnP").addEventListener("click", (e) => {
+            if (programacion) {
+                document.querySelector("#pon").style.display = "none";
+                e.target.innerText = "Ver programación"
+                programacion = false
+            } else {
+                document.querySelector("#pon").style.display = "block";
+                e.target.innerText = "Ocultar programación"
+                programacion = true
+            }
+        });
+    </script>
+
