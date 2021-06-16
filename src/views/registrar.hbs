@@ -1,0 +1,29 @@
+{{> header}}
+
+<main class="w-full bg-white flex items-center justify-center py-24">
+    <form class="mx-auto w-4/5 py-4 bg-white md:flex items-center justify-center py-" action="/signup" method="post">
+        <img class="w-96 mr-12" src="https://image.freepik.com/vector-gratis/iniciar-sesion-ilustracion-concepto_114360-125.jpg" alt="">
+
+        <div class="bg-white shadow-2xl p-8 rounded-md text-center">
+            <p class="text-2xl mb-2">Haz parte de Conferencias UFPS</p>
+            <p class="p-4 bg-blue-100 rounded-md mb-4">Regístrate en la aplicación <br> con la siguiente información.</p>
+            <input class="border border-gray-600 block mb-2 p-2 w-full" placeholder="Documento" type="text" name="documento" required>
+            <input class="border border-gray-600 block mb-2 p-2 w-full" placeholder="Nombres" type="text" name="nombres" required>
+            <input class="border border-gray-600 block mb-2 p-2 w-full" placeholder="Apellidos" type="text" name="apellidos" required>
+            <input class="border border-gray-600 block mb-2 p-2 w-full" placeholder="Celular" type="text" name="celular" required>
+            <input class="border border-gray-600 block mb-2 p-2 w-full" placeholder="correo" type="text" name="correo" required>
+            <input class="border border-gray-600 block mb-2 p-2 w-full" placeholder="*******" type="password" name="contrasena" required>
+            <input class="border border-gray-600 block mb-2 p-2 w-full" placeholder="Página web" type="text" name="paginaWeb">
+            <select class="border border-gray-600 block mb-2 p-2 w-full" name="idTipo" required>
+                <option value="">Seleccione una opción</option>
+                {{#each listaTipo}}
+                <option value="{{this.dataValues.id}}">{{this.dataValues.nombre}}</option>
+                {{/each}}
+            </select>
+            <button class="bg-blue-500 justify-center text-white flex py-2 w-full">Registrarse</button>
+            <a href="/usuario/login">¿Ya tienes una cuenta asociada?</a>
+        </div>
+    </form>s
+</main>
+
+{{> footer}}

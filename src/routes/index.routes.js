@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const administrador = require("./administrador.routes");
 const usuario = require("./usuario.routes");
+const TipoUsuarioCtr = require("../Controllers/TipoUsuarioCtr");
 const general = require("./general.routes");
 const passport = require("passport");
 const router = Router();
@@ -13,7 +14,10 @@ router.route("/logout").get((req, res) => {
 });
 router
 	.route("/signup")
-	.get((req, res) => res.render("/registrar", { title: "Registro" }))
+	.get(async (req, res) => {
+		const listaTipo = await TipoUsuarioCtr.listar();
+		res.render("registrar", { title: "Registro", listaTipo });
+	})
 	.post(
 		passport.authenticate("local-signup", {
 			successRedirect: "/usuario",

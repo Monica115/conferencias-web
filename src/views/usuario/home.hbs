@@ -13,6 +13,7 @@
                     <th class="py-2 text-gray-700">Fecha inicio</th>
                     <th class="py-2 text-gray-700">Fecha fin</th>
                     <th class="py-2 text-gray-700">Enlace conferencia</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +23,7 @@
                         <td class="py-2 text-center">{{this.dataValues.fechaInicio}}</td>
                         <td class="py-2 text-center">{{this.dataValues.fechaFin}}</td>
                         <td class="py-2 text-center">{{this.dataValues.enlace}}</td>
+                        <td><a class="duration-300 hover:bg-black outline-none text-sm my-2 text-white justify-center flex bg-blue-500 py-0.5 w-14 rounded-md mr-2" href="/usuario/ver-conferencia/{{this.dataValues.id}}">Ver</a></td>
                     </tr>
                 {{/each}}
             </tbody>

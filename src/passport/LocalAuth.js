@@ -28,7 +28,7 @@ passport.use(
 		async (req, correo, contrasena, done) => {
 			req.logOut();
 			const usuarioDB = await UsuarioCtr.consultarPorCorreo(correo);
-			const usuario = !usuarioDB ? await ClienteController.create(req) : null;
+			const usuario = !usuarioDB ? await UsuarioCtr.registrar(req.body) : null;
 			return usuario ? done(null, usuario.dataValues) : done(null, false);
 		}
 	)

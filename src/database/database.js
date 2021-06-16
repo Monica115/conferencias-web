@@ -17,7 +17,7 @@ const TipoUsuario = require("./models/TipoUsuario");
 const Usuario = require("./models/Usuario");
 
 (async () => {
-	await sequelize.sync({alter : true});
+	await sequelize.sync();
 	console.log("database connected");
 })();
 

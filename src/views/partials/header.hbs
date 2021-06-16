@@ -1,7 +1,10 @@
 <header class="bg-blue-500">
-    <nav class="py-4 mx-auto w-11/12">
+    <nav class="py-4 mx-auto w-11/12 flex items-center justify-between">
         <a href="/admin">
             <h2 class="text-3xl font-bold text-white">Conferencias</h2>
         </a>
+        {{#if usuario}}
+            <a class="text-white" href="/logout">Cerrar sesión</a>
+        {{/if}}
     </nav>
 </header>
