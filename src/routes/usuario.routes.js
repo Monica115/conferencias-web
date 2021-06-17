@@ -18,7 +18,7 @@ router
 	.post(
 		passport.authenticate("local-signin", {
 			successRedirect: "/usuario",
-			failureRedirect: "/sapo",
+			failureRedirect: "/404",
 			passReqToCallback: true,
 		})
 	);
