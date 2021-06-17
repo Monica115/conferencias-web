@@ -27,6 +27,7 @@ router
 	.get((req, res) =>
 		res.render("admin/agregar-conferencia", {
 			title: "Admin || Agregar conferencia",
+			usuario: req.user,
 		})
 	)
 	.post(AdministradorCtr.agregarConferencia);

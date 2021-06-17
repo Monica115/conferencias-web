@@ -38,41 +38,74 @@
                 {{/each}}
             </tbody>
         </table>
+        <button class="mt-3 p-2 bg-red-500 text-white" onclick="pruebaDivAPdf()">Descargar programación</button>
     </div>
 </main>
 
 {{> footer}}
-    <script>
-        var editando = false;
-        var programacion = false;
 
-        document.querySelector("#btnE").addEventListener("click", (e) => {
-            if (!editando) {
-                Array.from(document.querySelectorAll("input")).forEach(el => {
-                    el.readOnly = false;
-                });
-                document.querySelector("#btnF").style.display = "block"
-                e.target.innerText = "Cancelar"
-                editando = true
-            } else {
-                Array.from(document.querySelectorAll("input")).forEach(el => {
-                    el.readOnly = true;
-                });
-                document.querySelector("#btnF").style.display = "none"
-                e.target.innerText = "Editar"
-                editando = false
+<script>
+    var editando = false;
+    var programacion = false;
+
+    document.querySelector("#btnE").addEventListener("click", (e) => {
+        if (!editando) {
+            Array.from(document.querySelectorAll("input")).forEach(el => {
+                el.readOnly = false;
+            });
+            document.querySelector("#btnF").style.display = "block"
+            e.target.innerText = "Cancelar"
+            editando = true
+        } else {
+            Array.from(document.querySelectorAll("input")).forEach(el => {
+                el.readOnly = true;
+            });
+            document.querySelector("#btnF").style.display = "none"
+            e.target.innerText = "Editar"
+            editando = false
+        }
+    });
+    document.querySelector("#btnP").addEventListener("click", (e) => {
+        if (programacion) {
+            document.querySelector("#pon").style.display = "none";
+            e.target.innerText = "Ver programación"
+            programacion = false
+        } else {
+            document.querySelector("#pon").style.display = "block";
+            e.target.innerText = "Ocultar programación"
+            programacion = true
+        }
+    });
+</script>
+<script>
+    function pruebaDivAPdf() {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        source = document.querySelector("#bypassme");
+
+        specialElementHandlers = {
+            '#bypassme': function (element, renderer) {
+                return true
             }
-        });
-        document.querySelector("#btnP").addEventListener("click", (e) => {
-            if (programacion) {
-                document.querySelector("#pon").style.display = "none";
-                e.target.innerText = "Ver programación"
-                programacion = false
-            } else {
-                document.querySelector("#pon").style.display = "block";
-                e.target.innerText = "Ocultar programación"
-                programacion = true
-            }
-        });
-    </script>
+        };
+        margins = {
+            top: 80,
+            bottom: 60,
+            left: 40,
+            width: 522
+        };
+
+        pdf.fromHTML(
+            source, 
+            margins.left, // x coord
+            margins.top, { // y coord
+                'width': margins.width, 
+                'elementHandlers': specialElementHandlers
+            },
+
+            function (dispose) {
+                pdf.save('Prueba.pdf');
+            }, margins
+        );
+    }
+</script>
 

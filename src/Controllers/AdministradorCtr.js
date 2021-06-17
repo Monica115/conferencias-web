@@ -29,6 +29,7 @@ module.exports = {
 			const listaConferencias = await ConferenciaCtr.listar();
 			res.render("admin/conferencias", {
 				listaConferencias,
+				usuario: req.user,
 			});
 		} catch (error) {
 			console.log(error);
@@ -42,6 +43,7 @@ module.exports = {
 				return res.render("admin/ver-conferencia", {
 					conferencia,
 					programacion,
+					usuario: req.user,
 				});
 			}
 			return res.render("e404");
@@ -72,6 +74,7 @@ module.exports = {
 			const ponentes = await Usuario.findAll({ where: { idTipo: 3 } });
 			res.render("admin/agregar-ponencia", {
 				ponentes,
+				usuario: req.user,
 			});
 		} catch (error) {
 			console.log(error);

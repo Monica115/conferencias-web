@@ -39,6 +39,7 @@ module.exports = {
 				return res.render("usuario/ver-conferencia", {
 					conferencia,
 					programacion,
+					usuario: req.user,
 				});
 			}
 			return res.render("e404");
