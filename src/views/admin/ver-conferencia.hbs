@@ -18,7 +18,7 @@
         <a class="duration-300 hover:bg-black outline-none text-sm my-2 text-white justify-center items-center flex bg-red-500 py-0.5 w-32 rounded-md" href="/admin/editar-programacion/{{conferencia.dataValues.id}}">Editar programación</a>
         
         <h1 class="text-xl mt-2 mb-1">Programación</h2>
-        <table class="rounded-md bg-white w-full shadow-md">
+        <table class="rounded-md bg-white w-full shadow-md" id="programacion">
             <thead>
                 <tr class="border-b-2 border-gray-400 bg-blue-100">
                     <th class="py-2 text-gray-700">Nombre ponencia</th>
@@ -40,6 +40,7 @@
         </table>
         <button class="mt-3 p-2 bg-red-500 text-white" onclick="pruebaDivAPdf()">Descargar programación</button>
     </div>
+    <div id="textas">hola</div>
 </main>
 
 {{> footer}}
@@ -78,34 +79,18 @@
     });
 </script>
 <script>
+    window.jsPDF = window.jspdf.jsPDF
+    window.html2canvas = html2canvas;
     function pruebaDivAPdf() {
-        var pdf = new jsPDF('p', 'pt', 'letter');
-        source = document.querySelector("#bypassme");
-
-        specialElementHandlers = {
-            '#bypassme': function (element, renderer) {
-                return true
-            }
-        };
-        margins = {
-            top: 80,
-            bottom: 60,
-            left: 40,
-            width: 522
-        };
-
-        pdf.fromHTML(
-            source, 
-            margins.left, // x coord
-            margins.top, { // y coord
-                'width': margins.width, 
-                'elementHandlers': specialElementHandlers
+        const doc = new jsPDF({orientation: 'l',});
+        doc.setFontSize({ size: 12 })
+        doc.html(document.querySelector("#programacion"), {
+            callback: function (doc) {
+                doc.save();
             },
-
-            function (dispose) {
-                pdf.save('Prueba.pdf');
-            }, margins
-        );
+            x: 10,
+            y: 10
+        });
     }
 </script>
 
